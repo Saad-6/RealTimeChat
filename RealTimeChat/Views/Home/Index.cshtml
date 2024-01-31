@@ -1,0 +1,54 @@
+﻿<style>
+    #fir{
+        padding:10px 20px;
+        width:450px;
+        border:1px solid grey;
+        border-radius:15px;
+    }
+    .btn{
+        padding:10px;
+        border: 1px solid grey;
+        border-radius: 15px;
+        width:100px;
+        background-color:grey;
+        color:white;
+        font-size:20px;
+
+    }
+    .btn:hover{
+            color: grey;
+            background-color: white;
+    }
+    .search-container{
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        height: 80vh;
+    }
+    a{
+        text-decoration:none;
+        color:black;
+    }
+
+</style>
+<div class="search-container">
+    <form>
+
+
+        <div class="container">
+            <h3>Search a User</h3>
+            <input id="fir" placeholder="Enter a username..." name="UserName" />
+            <button class="btn">Search</button>
+            <div id="results">
+
+            </div>
+        </div>
+
+    </form>
+   
+    <script src="~/js/signalr.js"> </script>
+    <script src="~/js/site.js">
+        
+
+    </script>
+</div>

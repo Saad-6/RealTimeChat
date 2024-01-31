@@ -1,0 +1,85 @@
+﻿@model AppUser
+<style>
+   
+
+    .container {
+        max-width: 400px;
+        width: 100%;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .header {
+        background-color: #007bff;
+        color: #fff;
+        padding: 15px;
+        text-align: center;
+        font-size: 1.5rem;
+    }
+
+    #chatArea {
+        flex: 1;
+        overflow-y: scroll;
+        padding: 15px;
+    }
+
+    .message {
+        margin-bottom: 15px;
+        padding: 10px;
+        border-radius: 10px;
+        overflow-wrap: break-word;
+    }
+
+    .sent {
+        background-color: #007bff;
+        color: #fff;
+        align-self: flex-end;
+    }
+
+    .received {
+        background-color: #e6e6e6;
+        color: #333;
+    }
+
+    #messageInput {
+        width: calc(100% - 30px);
+        margin: 0 15px 15px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+
+    #sendMessageBtn {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        #sendMessageBtn:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+    <div class="container">
+        <form method="post"asp-controller="Chat"asp-action="chat">
+        <div class="header">
+            Chat with <span id="otherUserName">@Model.AppUserName</span>
+        </div>
+        <div id="chatArea"></div>
+        <input type="text" id="messageInput"name="message" placeholder="Type your message..." />
+        <input type="text" hidden style="" name="id" value="@Model.Id" />
+        <button type="submit"id="sendMessageBtn">Send Message</button>
+    </form>
+    </div>

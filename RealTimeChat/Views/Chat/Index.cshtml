@@ -1,0 +1,15 @@
+﻿@model AppUser
+
+    <div class="container">
+    <form asp-controller="Chat"asp-action="chat" method="post">
+    <h2>Chat with <span id="otherUserName">@Model.AppUserName</span></h2>
+    <div id="chatArea" class="chat-area"></div>
+    <input type="text" name="message" id="messageInput" placeholder="Type your message..." />
+    <input type="text"  style="display:block;" name="id" value="@Model.Id"/>
+    <button type="submit" id="sendMessageBtn">Send</button>
+    </form>
+
+</div>
+
+
+  
