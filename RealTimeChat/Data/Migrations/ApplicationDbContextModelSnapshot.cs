@@ -241,7 +241,7 @@ namespace RealTimeChat.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-<<<<<<< HEAD
+
                     b.Property<string>("OtherUserId")
                         .HasColumnType("nvarchar(450)");
 
@@ -254,14 +254,14 @@ namespace RealTimeChat.Data.Migrations
 
                     b.HasIndex("SenderUserId");
 
-=======
+
                     b.Property<string>("ParticipantIds")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
->>>>>>> 122d20511a43c7b31552552180044f743114b4bb
+
                     b.ToTable("Chats");
                 });
 
@@ -369,7 +369,7 @@ namespace RealTimeChat.Data.Migrations
                         .IsRequired();
                 });
 
-<<<<<<< HEAD
+
             modelBuilder.Entity("RealTimeChat.Models.Chat", b =>
                 {
                     b.HasOne("RealTimeChat.Models.AppUser", "OtherUser")
@@ -385,27 +385,25 @@ namespace RealTimeChat.Data.Migrations
                     b.Navigation("SenderUser");
                 });
 
-=======
->>>>>>> 122d20511a43c7b31552552180044f743114b4bb
             modelBuilder.Entity("RealTimeChat.Models.Message", b =>
                 {
                     b.HasOne("RealTimeChat.Models.Chat", null)
                         .WithMany("messages")
                         .HasForeignKey("ChatId");
 
-<<<<<<< HEAD
+
                     b.HasOne("RealTimeChat.Models.AppUser", "Reciever")
                         .WithMany()
                         .HasForeignKey("RecieverId");
 
-                    b.HasOne("RealTimeChat.Models.AppUser", "Sender")
-=======
+                    b.HasOne("RealTimeChat.Models.AppUser", "Sender");
+
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Reciever")
                         .WithMany()
                         .HasForeignKey("RecieverId");
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Sender")
->>>>>>> 122d20511a43c7b31552552180044f743114b4bb
+
                         .WithMany()
                         .HasForeignKey("SenderId");
 

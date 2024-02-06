@@ -26,19 +26,15 @@ namespace RealTimeChat.Controllers
 
             return View(loggedInUser);
         }
-<<<<<<< HEAD
+
         [HttpGet("/User/GetUser/{Username}")]
         public async Task<IActionResult> GetUser(string Username)
         {
-            var user =  _context.Users.FirstOrDefault(m => m.AppUserName == Username);
-=======
-        [HttpGet]
-        public async Task<IActionResult> GetUser(string value)
-        {
-            var user =  _context.Users.FirstOrDefault(m => m.AppUserName == value);
->>>>>>> 122d20511a43c7b31552552180044f743114b4bb
+            var user = _context.Users.FirstOrDefault(m => m.AppUserName == Username);
 
             return View(user);
         }
+
+       
     }
 }

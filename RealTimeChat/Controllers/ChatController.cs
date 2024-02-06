@@ -18,10 +18,17 @@ namespace RealTimeChat.Controllers
         }
         public IActionResult MyChats()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+              return  RedirectToAction("Index", "Home");
+            }
             var ThisUser = _userManager.GetUserAsync(User).Result;
             var ThisUserId = ThisUser.Id;
            var ThisUserChats = _context.Chats.Include(m=>m.messages).ThenInclude(m=>m.Reciever).Include(m=>m.messages).ThenInclude(m=>m.Sender).Include(m=>m.OtherUser).Include(m=>m.SenderUser).Where(m => m.SenderUser.Id==ThisUserId ||m.OtherUser.Id==ThisUserId).ToList();
-
+            if (ThisUserChats == null || ThisUser == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View("chat",ThisUserChats);
         }
        

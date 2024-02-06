@@ -13,17 +13,11 @@ namespace RealTimeChat.Models
 
         public Status Status { get; set; }
        
-<<<<<<< HEAD
+
         public AppUser Sender { get; set; }
       
        
         public AppUser Reciever { get; set; }
-=======
-        public IdentityUser Sender { get; set; }
-      
-       
-        public IdentityUser Reciever { get; set; }
->>>>>>> 122d20511a43c7b31552552180044f743114b4bb
 
         public Message()
         {

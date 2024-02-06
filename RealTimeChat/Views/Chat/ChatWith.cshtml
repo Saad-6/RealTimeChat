@@ -3,21 +3,6 @@
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
 @using System.Security.Claims
-@{
-
-    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-    var recieverId = "";
-    if (Model.SelectedChat.SenderUser.Id == userId)
-    {
-        recieverId = Model.SelectedChat.OtherUser.Id;
-    }
-    else
-    {
-        recieverId = Model.SelectedChat.SenderUser.Id;
-    }
-
-}
 <style>
     .container {
         max-width: 1170px;
@@ -234,6 +219,21 @@
         overflow-y: auto;
     }
 </style>
+@{
+
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+    var recieverId = "";
+    if (Model.SelectedChat.SenderUser.Id == userId)
+    {
+        recieverId = Model.SelectedChat.OtherUser.Id;
+    }
+    else
+    {
+        recieverId = Model.SelectedChat.SenderUser.Id;
+    }
+
+}
 <div class="container">
     <h3 class=" text-center">Chats</h3>
     <div class="messaging">
@@ -247,7 +247,7 @@
                     </div>
                     <div class="srch_bar">
                         <div class="stylish-input-group">
-                            <input type="text" class="search-bar" placeholder="Search">
+                            <input type="text" class="search-bar"id="searchBar" placeholder="Search">
                             <span class="input-group-addon">
                                 <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
                             </span>
@@ -260,7 +260,11 @@
                 <div class="inbox_chat">
                     @foreach (var item in Model.Chats)
                     {
-                        <a asp-route-otherId="@item.OtherUser.Id" asp-controller="Chat" asp-action="ChatWith" id="onechat">
+                        var currentRecieverId = (item.SenderUser.Id == userId) ? item.OtherUser.Id : item.SenderUser.Id;
+                        var currentUserName = (item.SenderUser.Id == userId) ? item.OtherUser.AppUserName : item.SenderUser.AppUserName;
+                        var currentPP = (item.SenderUser.Id == userId) ? item.OtherUser.ProfileUrl : item.SenderUser.ProfileUrl;
+
+                        <a asp-route-otherId="@currentRecieverId" asp-controller="Chat" asp-action="ChatWith" id="onechat">
                             <div class="chat_list active_chat">
                                 <div class="chat_people">
                                     <div class="chat_img"> <img src="@item.OtherUser.ProfileUrl" alt=""> </div>
@@ -282,31 +286,33 @@
             <div class="mesgs">
                 <div class="msg_history" style="height: 400px; overflow-y: auto;">
 
-                        @if (Model.SelectedChat.SenderUser.Id == userId)
-                        {
+                    @if (Model.SelectedChat.SenderUser.Id == userId)
+                    {
 
-                        <h3>Chat with @Model.SelectedChat.OtherUser.AppUserName
+                        <h3>
+                            Chat with @Model.SelectedChat.OtherUser.AppUserName
 
                         </h3>
                     }
                     else
                     {
-                        
-                    <h3> Chat with @Model.SelectedChat.SenderUser.AppUserName
-                        
 
-                    </h3>
+                        <h3>
+                            Chat with @Model.SelectedChat.SenderUser.AppUserName
+
+
+                        </h3>
                     }
-                   
 
-                    @foreach(var item in Model.SelectedChat.messages)
+
+                    @foreach (var item in Model.SelectedChat.messages)
                     {
                         if (item.Sender.Id == userId)
                         {
                             <div class="outgoing_msg">
                                 <div class="sent_msg">
                                     <p id="ThisUserText">
-                                       @item.message
+                                        @item.message
                                     </p>
                                     <span class="time_date"> @item.DateTime</span>
                                 </div>
@@ -331,15 +337,15 @@
 
                     }
 
-                  
-                    
+
+
                 </div>
-                    <div class="type_msg">
-                        <div class="input_msg_write">
-                            <input type="text" id="typeMessage" class="write_msg" placeholder="Type a message" />
-                            <button class="msg_send_btn" onclick="SendMessage('@recieverId')" id="sendbutton" type="button"><i class="fa fa-paper-plane-o" ></i>Send</button>
-                        </div>
+                <div class="type_msg">
+                    <div class="input_msg_write">
+                        <input type="text" id="typeMessage" class="write_msg" placeholder="Type a message" />
+                        <button class="msg_send_btn" onclick="SendMessage('@recieverId')" id="sendbutton" type="submit"><i class="fa fa-paper-plane-o"></i>Send</button>
                     </div>
+                </div>
             </div>
 
 
@@ -352,12 +358,12 @@
         var connectionMessage = new signalR.HubConnectionBuilder().withUrl("/hubs/message").build();
 
         //Methods that is invoked by the hub
-        connectionMessage.on("RecieveMessage", (latestMessage,IsSenderUser) => {
+        connectionMessage.on("RecieveMessage", (latestMessage, IsSenderUser) => {
 
 
             console.log("Entered Recieved message Function");
-            console.log("The Message"+latestMessage);
-            console.log("The Checker"+IsSenderUser);
+            console.log("The Message" + latestMessage);
+            console.log("The Checker" + IsSenderUser);
             var msgHistoryContainer = document.querySelector(".msg_history");
             console.log(latestMessage);
 
@@ -368,11 +374,11 @@
                 var sentMsg = document.createElement("div");
                 sentMsg.className = "outgoing_msg";
                 sentMsg.innerHTML = `
-                    <div class="sent_msg">
-                        <p id="ThisUserText">${latestMessage}</p>
-                        <span class="time_date">${new Date().toLocaleTimeString()}</span>
-                    </div>
-                `;
+                            <div class="sent_msg">
+                                <p id="ThisUserText">${latestMessage}</p>
+                                <span class="time_date">${new Date().toLocaleTimeString()}</span>
+                            </div>
+                        `;
                 msgHistoryContainer.appendChild(sentMsg);
                 msgHistoryContainer.scrollTop = msgHistoryContainer.scrollHeight;
             } else {
@@ -382,14 +388,14 @@
                 var receivedMsg = document.createElement("div");
                 receivedMsg.className = "incoming_msg";
                 receivedMsg.innerHTML = `
-                    <div class="incoming_msg_img"> <img src="" alt=""> </div>
-                    <div class="received_msg">
-                        <div class="received_withd_msg">
-                            <p id="OtherUserText">${latestMessage}</p>
-                            <span class="time_date">${new Date().toLocaleTimeString()}</span>
-                        </div>
-                    </div>
-                `;
+                            <div class="incoming_msg_img"> <img src="" alt=""> </div>
+                            <div class="received_msg">
+                                <div class="received_withd_msg">
+                                    <p id="OtherUserText">${latestMessage}</p>
+                                    <span class="time_date">${new Date().toLocaleTimeString()}</span>
+                                </div>
+                            </div>
+                        `;
                 msgHistoryContainer.appendChild(receivedMsg);
                 msgHistoryContainer.scrollTop = msgHistoryContainer.scrollHeight;
             }
@@ -405,16 +411,22 @@
             if (message.value != "") {
                 console.log("Sending To Hub");
                 var query = message.value;
-            connectionMessage.send('SendMessageHub', query,recieverId);
+                connectionMessage.send('SendMessageHub', query, recieverId);
                 message.value = "";
 
                 var msgHistoryContainer = document.querySelector(".msg_history");
                 msgHistoryContainer.scrollTop = msgHistoryContainer.scrollHeight;
-            }else{
+            } else {
                 console.log("Not Working");
             }
 
         }
+
+        $('#searchBar').on('input', function () {
+
+            var query = $(this).val();
+            connection.send("DynamicSearchChatList", query);
+        });
 
 
         //Start the connection
@@ -424,11 +436,16 @@
         connectionMessage.start().then(fullfiled, notfullfiled);
 
         //Irrelavent to Signalr Functions
-        function myFunction(){
+        function myFunction() {
             var msgHistoryContainer = document.querySelector(".msg_history");
             msgHistoryContainer.scrollTop = msgHistoryContainer.scrollHeight;
         }
         window.onload = function () {
             myFunction();
         };
+        document.getElementById("typeMessage").addEventListener("keyup", function (event) {
+            if (event.key === "Enter") {
+                document.getElementById("sendbutton").click();
+            }
+        });
     </script>
