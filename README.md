@@ -4,6 +4,6 @@ Additional Functionalities include
 
   --Real time dynamic search without reload (data from db)
 
-  --Real time dynamic email and username validation in sync with server without reload
+  --Real time unique dynamic email and username validation in sync with server without reload
 
   --Main Functionality , Chatting with someone dynamically
