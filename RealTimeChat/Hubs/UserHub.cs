@@ -22,7 +22,12 @@ namespace RealTimeChat.Hubs
         public async Task DynamicSearch(string query)
         {
              var users = await _userManager.Users.Where(u => u.AppUserName.Contains(query)).ToListAsync();
+<<<<<<< HEAD
             
+=======
+            // var users = _context.Users.FirstOrDefault(m => m.AppUserName == query);
+           //var  users = await _context.Users.Where(u => u.AppUserName == query).ToListAsync();
+>>>>>>> 122d20511a43c7b31552552180044f743114b4bb
             List<string> names = new List<string>();
             
             foreach (var user in users)
